@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #1a0a2e 0%, #2d1b4e 50%, #1a0a2e 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Press Start 2P', cursive;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Pixel stars background */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background: #fff;
+            image-rendering: pixelated;
+            animation: twinkle 2s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        /* Pixel Heart */
+        .heart-container {
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .pixel-heart {
+            width: 120px;
+            height: 105px;
+            position: relative;
+            margin: 0 auto;
+            image-rendering: pixelated;
+        }
+
+        .pixel-heart::before,
+        .pixel-heart::after {
+            content: '';
+            position: absolute;
+            background: #ff4d6d;
+            box-shadow:
+                0 0 0 0 #ff4d6d,
+                inset -8px -8px 0 rgba(0, 0, 0, 0.2),
+                inset 8px 8px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .pixel-heart::before {
+            width: 52px;
+            height: 45px;
+            left: 6px;
+            top: 0;
+            clip-path: polygon(0% 40%, 15% 15%, 40% 0%, 60% 0%, 85% 15%, 100% 40%,
+                    100% 60%, 50% 100%, 0% 60%);
+            background:
+                linear-gradient(135deg, #ff6b88 0%, #ff4d6d 50%, #cc3d57 100%);
+        }
+
+        .pixel-heart::after {
+            width: 52px;
+            height: 45px;
+            right: 6px;
+            top: 0;
+            clip-path: polygon(0% 40%, 15% 15%, 40% 0%, 60% 0%, 85% 15%, 100% 40%,
+                    100% 60%, 50% 100%, 0% 60%);
+            background:
+                linear-gradient(135deg, #ff6b88 0%, #ff4d6d 50%, #cc3d57 100%);
+        }
+
+        /* Simple pixel heart with boxes */
+        .simple-heart {
+            display: grid;
+            grid-template-columns: repeat(9, 12px);
+            grid-template-rows: repeat(8, 12px);
+            gap: 2px;
+            margin: 0 auto;
+        }
+
+        .simple-heart .px {
+            background: #ff4d6d;
+            image-rendering: pixelated;
+            box-shadow: inset -2px -2px 0 rgba(0, 0, 0, 0.3),
+                inset 2px 2px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .simple-heart .px.dark {
+            background: #cc3d57;
+        }
+
+        .simple-heart .px.light {
+            background: #ff6b88;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+            text-shadow:
+                4px 4px 0 #ff4d6d,
+                -2px -2px 0 #2d1b4e;
+            line-height: 1.8;
+            letter-spacing: 2px;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 60px;
+            justify-content: center;
+            align-items: center;
+            min-height: 80px;
+            position: relative;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            position: fixed;
+            transition: left 0.15s ease-out, top 0.15s ease-out, transform 0.3s ease, box-shadow 0.3s ease;
+            image-rendering: pixelated;
+            z-index: 50;
+        }
+
+        .btn-yes {
+            background: linear-gradient(180deg, #5aff5a 0%, #32cd32 50%, #228b22 100%);
+            color: #0a3d0a;
+            box-shadow:
+                4px 4px 0 #0a3d0a,
+                inset -3px -3px 0 rgba(0, 0, 0, 0.2),
+                inset 3px 3px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-yes:hover {
+            box-shadow:
+                6px 6px 0 #0a3d0a,
+                inset -3px -3px 0 rgba(0, 0, 0, 0.2),
+                inset 3px 3px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-no {
+            background: linear-gradient(180deg, #ff6b6b 0%, #ee4444 50%, #cc2222 100%);
+            color: #4a0a0a;
+            box-shadow:
+                4px 4px 0 #4a0a0a,
+                inset -3px -3px 0 rgba(0, 0, 0, 0.2),
+                inset 3px 3px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-no:hover {
+            box-shadow:
+                6px 6px 0 #4a0a0a,
+                inset -3px -3px 0 rgba(0, 0, 0, 0.2),
+                inset 3px 3px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .success-message h2 {
+            color: #ff6b88;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 0 #cc3d57;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .success-message p {
+            color: #fff;
+            font-size: 0.7rem;
+            line-height: 2;
+            text-shadow: 2px 2px 0 #2d1b4e;
+        }
+
+        .hearts-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .falling-heart {
+            position: absolute;
+            font-size: 20px;
+            animation: fall linear forwards;
+            opacity: 0.8;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .main-content {
+            display: block;
+        }
+
+        .main-content.hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="stars" id="stars"></div>
+
+    <div class="container">
+        <div class="main-content" id="mainContent">
+            <div class="heart-container">
+                <div class="simple-heart">
+                    <div></div>
+                    <div class="px light"></div>
+                    <div class="px"></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div class="px light"></div>
+                    <div class="px"></div>
+                    <div></div>
+                    <div class="px light"></div>
+                    <div class="px light"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div></div>
+                    <div class="px light"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px dark"></div>
+                    <div class="px light"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px dark"></div>
+                    <div class="px light"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px dark"></div>
+                    <div></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px dark"></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px dark"></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px dark"></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div class="px dark"></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+
+            <h1>Will You Be<br>My Valentine?</h1>
+
+            <div class="buttons-container" id="buttonsContainer">
+                <button class="btn btn-yes" id="yesBtn">YES!</button>
+                <button class="btn btn-no" id="noBtn">No</button>
+            </div>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <div class="heart-container">
+                <div class="simple-heart">
+                    <div></div>
+                    <div class="px light"></div>
+                    <div class="px"></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div class="px light"></div>
+                    <div class="px"></div>
+                    <div></div>
+                    <div class="px light"></div>
+                    <div class="px light"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div></div>
+                    <div class="px light"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px dark"></div>
+                    <div class="px light"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px dark"></div>
+                    <div class="px light"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px dark"></div>
+                    <div></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px dark"></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px dark"></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div class="px"></div>
+                    <div class="px"></div>
+                    <div class="px dark"></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div class="px dark"></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <h2>YAY! ♥</h2>
+            <p>You just made me the<br>happiest person ever!<br><br>Happy Valentine's Day!</p>
+        </div>
+    </div>
+
+    <div class="hearts-rain" id="heartsRain"></div>
+
+    <script>
+        // Create pixel stars
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 50; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() > 0.7 ? 4 : 2;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 2 + 's';
+            starsContainer.appendChild(star);
+        }
+
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const mainContent = document.getElementById('mainContent');
+        const successMessage = document.getElementById('successMessage');
+        const heartsRain = document.getElementById('heartsRain');
+
+        let yesHasSlipped = false;
+        let noPosition = { x: window.innerWidth / 2 + 150, y: window.innerHeight / 2 };
+        let yesPosition = { x: window.innerWidth / 2 - 150, y: window.innerHeight / 2 };
+
+        const REPEL_DISTANCE = 120;
+        const BUTTON_PADDING = 80;
+
+        // Initialize button positions
+        function initPositions() {
+            const containerRect = document.getElementById('buttonsContainer').getBoundingClientRect();
+            const centerX = containerRect.left + containerRect.width / 2;
+            const centerY = containerRect.top + containerRect.height / 2;
+
+            yesPosition = { x: centerX - 80, y: centerY };
+            noPosition = { x: centerX + 80, y: centerY };
+
+            updateButtonPosition(yesBtn, yesPosition);
+            updateButtonPosition(noBtn, noPosition);
+        }
+
+        function updateButtonPosition(btn, pos) {
+            btn.style.left = pos.x + 'px';
+            btn.style.top = pos.y + 'px';
+            btn.style.transform = 'translate(-50%, -50%)';
+        }
+
+        function getDistance(x1, y1, x2, y2) {
+            return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+        }
+
+        function clampPosition(pos, btn) {
+            const rect = btn.getBoundingClientRect();
+            const minX = BUTTON_PADDING + rect.width / 2;
+            const maxX = window.innerWidth - BUTTON_PADDING - rect.width / 2;
+            const minY = BUTTON_PADDING + rect.height / 2;
+            const maxY = window.innerHeight - BUTTON_PADDING - rect.height / 2;
+
+            return {
+                x: Math.max(minX, Math.min(maxX, pos.x)),
+                y: Math.max(minY, Math.min(maxY, pos.y))
+            };
+        }
+
+        // Graceful repel with boundary bounce
+        function repelButton(btn, position, mouseX, mouseY, strength = 1) {
+            const distance = getDistance(mouseX, mouseY, position.x, position.y);
+
+            if (distance < REPEL_DISTANCE) {
+                const angle = Math.atan2(position.y - mouseY, position.x - mouseX);
+                const force = ((REPEL_DISTANCE - distance) / REPEL_DISTANCE) * 80 * strength;
+
+                let newX = position.x + Math.cos(angle) * force;
+                let newY = position.y + Math.sin(angle) * force;
+
+                const rect = btn.getBoundingClientRect();
+                const minX = BUTTON_PADDING + rect.width / 2;
+                const maxX = window.innerWidth - BUTTON_PADDING - rect.width / 2;
+                const minY = BUTTON_PADDING + rect.height / 2;
+                const maxY = window.innerHeight - BUTTON_PADDING - rect.height / 2;
+
+                // Bounce off boundaries
+                if (newX < minX) newX = minX + (minX - newX) * 0.5;
+                if (newX > maxX) newX = maxX - (newX - maxX) * 0.5;
+                if (newY < minY) newY = minY + (minY - newY) * 0.5;
+                if (newY > maxY) newY = maxY - (newY - maxY) * 0.5;
+
+                // Final clamp
+                const clamped = clampPosition({ x: newX, y: newY }, btn);
+                position.x = clamped.x;
+                position.y = clamped.y;
+
+                updateButtonPosition(btn, position);
+                return true;
+            }
+            return false;
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+
+            // YES button - slip away continuously like NO
+            repelButton(yesBtn, yesPosition, mouseX, mouseY, 1.2);
+
+            // NO button - always repel like magnet
+            repelButton(noBtn, noPosition, mouseX, mouseY, 1.2);
+        });
+
+        // Touch support for mobile
+        document.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            const touchX = touch.clientX;
+            const touchY = touch.clientY;
+
+            // YES button - slip away from touch
+            repelButton(yesBtn, yesPosition, touchX, touchY, 1.5);
+
+            // NO button - slip away from touch
+            repelButton(noBtn, noPosition, touchX, touchY, 1.5);
+        });
+
+        document.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            const touchX = touch.clientX;
+            const touchY = touch.clientY;
+
+            // YES button - slip away from touch
+            repelButton(yesBtn, yesPosition, touchX, touchY, 1.5);
+
+            // NO button - slip away from touch
+            repelButton(noBtn, noPosition, touchX, touchY, 1.5);
+        });
+
+        // Yes button click
+        yesBtn.addEventListener('click', () => {
+            mainContent.classList.add('hidden');
+            successMessage.classList.add('show');
+            createHeartsRain();
+        });
+
+        // Create falling hearts animation
+        function createHeartsRain() {
+            const hearts = ['❤️', '💖', '💕', '💗', '💓'];
+
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'falling-heart';
+                    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.top = '-30px';
+                    heart.style.fontSize = (15 + Math.random() * 20) + 'px';
+                    heart.style.animationDuration = (3 + Math.random() * 3) + 's';
+                    heartsRain.appendChild(heart);
+
+                    setTimeout(() => heart.remove(), 6000);
+                }, i * 150);
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('load', initPositions);
+        window.addEventListener('resize', initPositions);
+    </script>
+</body>
+
+</html>
